@@ -109,7 +109,7 @@ search_bar.addEventListener("keydown", function (e) {
   // enter
   else if (e.key == "Enter") {
     selected_search_item = document.querySelector(".selected").id;
-    getZoteroItems(0.0, ["citekey"], selected_search_item, "create");
+    getZoteroItems(0.0, ["citationKey"], selected_search_item, "create"); // citationKey
     exitSearch();
   }
 });
@@ -159,8 +159,7 @@ function searchZoteroItems(e) {
         // display filtered zotero items
         for (let i = 0; i < filtered_zotero_search_results.length; i++) {
           zotero_item = filtered_zotero_search_results[i].item;
-          
-          zotero_item_citeKey = zotero_item.citekey;
+          zotero_item_citeKey = zotero_item.citationKey;
           zotero_item_title = zotero_item.title;
         
           // format zotero authors
@@ -242,14 +241,14 @@ function setAttributes(element, attrs) {
 }
 
 function createZoteroPage(e) {
-  let selected_zotero_item_path = e.path;
+  let selected_zotero_item_path = e.path || (e.composedPath && e.composedPath());
   let selected_zotero_item;
   
   if (selected_zotero_item_path) {
     selected_zotero_item_path.forEach(selected_path => {
       if (selected_path.className == "search-result") {
         selected_zotero_item_citekey = selected_path.id;
-        getZoteroItems(0.0, ["citekey"], selected_zotero_item_citekey, "create");
+        getZoteroItems(0.0, ["citationKey"], selected_zotero_item_citekey, "create");
       }
     });
   }
@@ -329,7 +328,7 @@ function zoteroTemplates(item) {
       });
     }
     else if ((property_key == "citekey") || (property_value == "citekey")) {
-      let zotero_citekey = zotero_item.citekey;
+      let zotero_citekey = zotero_item.citationKey;
       (zotero_citekey) ? page_properties[property_key] = zotero_citekey : page_properties[property_key] = "NA";
     }
     else if ((property_key == "doi") || (property_value == "doi")) {
